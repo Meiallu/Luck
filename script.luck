@@ -1,0 +1,21 @@
+fun main():
+    int pointer = 1
+    int end = 100
+
+    boolean myBool = true
+
+    while pointer < end:
+        String total = ""
+        int multiplied = 4 * 3
+
+        println(multiplied * 2)
+
+        if pointer % 3 == 0:
+            total = total + "Fizz"
+        elif pointer % 4 == 0:
+            total = total + "Buzz"
+        else:
+            total = total + pointer
+
+        println(string)
+    println("end of>++--)( printing")

@@ -1,0 +1,18 @@
+package me.meiallu.luck;
+
+public enum TokenType {
+    CODE,
+    IDENTIFIER,
+    ASSIGNMENT_OPERATOR,
+    ARITHMETIC_OPERATOR,
+    COMPARISON_OPERATOR,
+    LOGICAL_OPERATOR,
+    BLOCK_START,
+    BLOCK_STOP,
+    KEYWORD,
+    NUMBER,
+    STRING,
+    BOOLEAN,
+    TYPE,
+    NEW_LINE
+}
