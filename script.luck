@@ -1,21 +1,16 @@
-fun main():
-    int pointer = 1
-    int end = 100
+var myNumber = 5 * 23 * 1 * 123 * 2
+var myNumber22 = 5 * 3 + 300
+var myAlreadyDefinedNumber = 3
+var otherVariable = myNumber22
+var myString = "Minha string porraUuruawdkW2"
 
-    boolean myBool = true
-
-    while pointer < end:
-        String total = ""
-        int multiplied = 4 * 3
-
-        println(multiplied * 2)
-
-        if pointer % 3 == 0:
-            total = total + "Fizz"
-        elif pointer % 4 == 0:
-            total = total + "Buzz"
-        else:
-            total = total + pointer
-
-        println(string)
-    println("end of>++--)( printing")
+println()
+println(myNumber)
+println(myNumber22, myAlreadyDefinedNumber)
+println(3 + 12312 * 81238712 / 2 * 300)
+print(myNumber)
+print(myNumber)
+print(myNumber)
+print(myNumber)
+println("wowow kk")
+println(myString)

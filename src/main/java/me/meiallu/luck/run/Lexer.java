@@ -1,4 +1,7 @@
-package me.meiallu.luck;
+package me.meiallu.luck.run;
+
+import me.meiallu.luck.data.Token;
+import me.meiallu.luck.data.TokenType;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,10 +12,10 @@ import java.util.List;
 public class Lexer {
 
     public static List<Token> lex(String path) {
-        List<Token> tokenList = new ArrayList<>();
-
         try {
+            List<Token> tokenList = new ArrayList<>();
             BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+
             String line = bufferedReader.readLine();
 
             while (line != null) {
@@ -38,38 +41,31 @@ public class Lexer {
                     }
 
                     switch (character) {
-                        case '+', '-', '%', '*':
+                        case '+', '-', '*', '/', '%':
                             tokenList.add(new Token(TokenType.ARITHMETIC_OPERATOR, character));
                             break;
-                        case '!':
-                            tokenList.add(new Token(TokenType.LOGICAL_OPERATOR, character));
-                            break;
                         case '=':
-                            Token lastToken = tokenList.get(tokenList.size() - 1);
-                            char lastChar = lastToken.value instanceof Character ? (char) lastToken.value : 'a';
-
-                            if (lastToken.type == TokenType.LOGICAL_OPERATOR && lastChar == '!') {
-                                tokenList.remove(lastToken);
-                                tokenList.add(new Token(TokenType.COMPARISON_OPERATOR, "!="));
-                            } else if (lastToken.type == TokenType.ASSIGNMENT_OPERATOR && lastChar == '=') {
-                                tokenList.remove(lastToken);
-                                tokenList.add(new Token(TokenType.COMPARISON_OPERATOR, "=="));
-                            } else {
-                                tokenList.add(new Token(TokenType.ASSIGNMENT_OPERATOR, character));
-                            }
+                            tokenList.add(new Token(TokenType.ASSIGNMENT_OPERATOR, null));
                             break;
-                        case '<', '>':
-                            tokenList.add(new Token(TokenType.COMPARISON_OPERATOR, character));
-                            break;
-                        case ' ', '(', ')', ':':
+                        case ' ', ',', '(', ')':
                             if (builder != null) {
-                                tokenList.add(getToken(builder));
+                                Token token = getToken(builder);
+                                tokenList.add(token);
+
+                                if (character == '(')
+                                    token.type = TokenType.FUNCTION;
+
                                 builder = null;
                             }
 
-                            if (character == ':')
-                                tokenList.add(new Token(TokenType.BLOCK_START, character));
-
+                            switch (character) {
+                                case ')':
+                                    tokenList.add(new Token(TokenType.FUNCTION_END, null));
+                                    break;
+                                case ',':
+                                    tokenList.add(new Token(TokenType.SEPARATOR, null));
+                                    break;
+                            }
                             break;
                         default:
                             if (builder == null)
@@ -90,32 +86,24 @@ public class Lexer {
             }
 
             bufferedReader.close();
+            return tokenList;
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-
-        return tokenList;
     }
 
     public static Token getToken(StringBuilder builder) {
         String toString = builder.toString();
 
-        switch (toString) {
-            case "&&", "||":
-                return new Token(TokenType.LOGICAL_OPERATOR, toString);
-            case "fun", "while", "if", "elif", "else":
-                return new Token(TokenType.KEYWORD, toString);
-            case "byte", "short", "int", "long", "float", "double", "char", "boolean":
-                return new Token(TokenType.TYPE, toString);
-            case "true", "false":
-                return new Token(TokenType.BOOLEAN, toString);
-            default:
-                try {
-                    double parsedDouble = Double.parseDouble(toString);
-                    return new Token(TokenType.NUMBER, parsedDouble);
-                } catch (NumberFormatException ignored) {
-                    return new Token(TokenType.IDENTIFIER, toString);
-                }
+        if (toString.equals("var")) {
+            return new Token(TokenType.TYPE, null);
+        } else {
+            try {
+                double parsedDouble = Double.parseDouble(toString);
+                return new Token(TokenType.NUMBER, parsedDouble);
+            } catch (NumberFormatException ignored) {
+                return new Token(TokenType.IDENTIFIER, toString);
+            }
         }
     }
 }

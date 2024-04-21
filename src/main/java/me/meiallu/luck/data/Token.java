@@ -1,8 +1,9 @@
-package me.meiallu.luck;
+package me.meiallu.luck.data;
 
 public class Token {
-    TokenType type;
-    Object value;
+
+    public TokenType type;
+    public Object value;
 
     public Token(TokenType type, Object object) {
         this.type = type;
