@@ -1,8 +1,8 @@
 package me.meiallu.luck.function;
 
-public class Function {
+public abstract class Function {
 
-    public void call(Object... objects) {
-
+    public Object call(Object... objects) {
+        return null;
     }
 }

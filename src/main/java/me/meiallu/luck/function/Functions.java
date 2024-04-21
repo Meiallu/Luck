@@ -3,10 +3,11 @@ package me.meiallu.luck.function;
 public enum Functions {
 
     PRINTLINE("println", new PrintLine()),
-    PRINT("print", new Print());
+    PRINT("print", new Print()),
+    FORMAT("format", new Format());
 
-    Function function;
-    String name;
+    private final Function function;
+    private final String name;
 
     public static Functions get(String name) {
         for (Functions loopedFunction : Functions.values())
@@ -16,8 +17,8 @@ public enum Functions {
         return null;
     }
 
-    public void call(Object... objects) {
-        function.call(objects);
+    public Object call(Object... objects) {
+        return function.call(objects);
     }
 
     Functions(String name, Function function) {
