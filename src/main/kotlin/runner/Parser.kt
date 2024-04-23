@@ -1,4 +1,10 @@
-package me.meiallu.luck
+package me.meiallu.luck.runner
+
+import me.meiallu.luck.data.Token
+import me.meiallu.luck.data.TokenType
+import me.meiallu.luck.data.Variable
+import me.meiallu.luck.function.Functions
+import me.meiallu.luck.variables
 
 class Parser {
 
@@ -14,12 +20,15 @@ class Parser {
                         val name = tokenList[++i].value as String
                         var value: Any? = null
 
+                        if (variables.containsKey(name))
+                            throw IllegalArgumentException("const cannot be reassigned")
+
                         if (tokenList[i + 1].type == TokenType.ASSIGNMENT_OPERATOR) {
                             i += 2
                             value = evaluate(tokenList, i)
                         }
 
-                        variables[name] = value as Any
+                        variables[name] = Variable(token.value as String == "const", value)
                     }
 
                     TokenType.IDENTIFIER -> {
@@ -27,9 +36,12 @@ class Parser {
 
                         if (variables.containsKey(identifier) && tokenList[i + 1].type == TokenType.ASSIGNMENT_OPERATOR) {
                             i += 2
-                            val identifierValue = evaluate(tokenList, i)
 
-                            variables[identifier] = identifierValue
+                            if (variables[identifier]!!.constant)
+                                throw IllegalArgumentException("const cannot be reassigned")
+
+                            val identifierValue = evaluate(tokenList, i)
+                            variables[identifier]?.value = identifierValue
                         }
                     }
 
@@ -88,7 +100,7 @@ class Parser {
 
                 var value = when (token.type) {
                     TokenType.NUMBER -> token.value as Double
-                    TokenType.IDENTIFIER -> variables[token.value as String] as Double
+                    TokenType.IDENTIFIER -> variables[token.value as String]?.value as Double
                     else -> throw IllegalArgumentException("Unexpected type: " + token.type)
                 }
 
@@ -100,7 +112,7 @@ class Parser {
 
                         val nextDouble = when (nextToken.type) {
                             TokenType.NUMBER -> nextToken.value as Double
-                            TokenType.IDENTIFIER -> variables[nextToken.value as String] as Double
+                            TokenType.IDENTIFIER -> variables[nextToken.value as String]?.value as Double
                             else -> throw IllegalStateException("Unexpected type: " + nextToken.type)
                         }
 
@@ -119,7 +131,7 @@ class Parser {
             }
 
             return when (assignmentList[0].type) {
-                TokenType.IDENTIFIER -> variables[assignmentList[0].value as String]
+                TokenType.IDENTIFIER -> variables[assignmentList[0].value as String]?.value
                 TokenType.FUNCTION -> {
                     assignmentList += Token(TokenType.FUNCTION_END, null)
                     runFunction(assignmentList, assignmentList[0].value as String, 0)

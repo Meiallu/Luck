@@ -1,24 +1,12 @@
-var myNumber = 5 * 23 * 1 * 123 * 2
-var myNumber22 = 5 * 3 + 300
-var myAlreadyDefinedNumber = 3
-var otherVariable = myNumber22
+println("Insert your age: ")
+const idade = readNumber()
 
-var myString = "Minha string porraUuruawdkW2"
-myString = "other string caraaa"
+idade = 3
 
-println()
-println(myNumber)
-println(myNumber22, myAlreadyDefinedNumber)
-println(3 + 12312 * 81238712 / 2 * 300)
-print(myNumber)
-print(myNumber)
-print(myNumber)
-print(myNumber)
-println("wowow kk")
-println(myString)
+if (idade < 3) {
+    println("vc tem menos de 3 anos")
+}
 
-var idade = 11
-var nome = "John"
-var phrase = format("meu nome é {nome} e eu tenho {idade} anos")
-
-println(phrase)
+if (idade > 90) {
+    println("vc tem mais de 90 anos slk")
+}

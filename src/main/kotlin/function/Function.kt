@@ -1,4 +1,4 @@
-package me.meiallu.luck
+package me.meiallu.luck.function
 
 abstract class Function {
 

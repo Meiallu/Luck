@@ -1,4 +1,6 @@
-package me.meiallu.luck
+package me.meiallu.luck.function
+
+import me.meiallu.luck.variables
 
 class Format : Function() {
 
