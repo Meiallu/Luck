@@ -1,5 +1,5 @@
 plugins {
-    id("java")
+    kotlin("jvm") version "1.9.23"
 }
 
 group = "me.meiallu.luck"
@@ -12,4 +12,8 @@ repositories {
 
 dependencies {
 
+}
+
+kotlin {
+    jvmToolchain(17)
 }

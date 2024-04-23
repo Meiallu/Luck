@@ -1,6 +1,6 @@
-package me.meiallu.luck.data;
+package me.meiallu.luck
 
-public enum TokenType {
+enum class TokenType {
     IDENTIFIER,
     FUNCTION,
     FUNCTION_END,
